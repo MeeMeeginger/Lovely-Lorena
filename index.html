@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lovely Lorena - Website Archive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 1.2rem;
+        }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .section h2 {
+            color: #e94560;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .folder-card {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .folder-card:hover {
+            background: rgba(233, 69, 96, 0.2);
+            transform: translateY(-5px);
+        }
+        .folder-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .folder-card h3 {
+            font-size: 1rem;
+            color: #fff;
+        }
+        .folder-card p {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        .blog-list {
+            list-style: none;
+        }
+        .blog-list li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .blog-list li:last-child {
+            border-bottom: none;
+        }
+        .blog-list a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .blog-list a:hover {
+            color: #e94560;
+            text-decoration: underline;
+        }
+        .stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-box .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+        .stat-box .label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 50px;
+        }
+        footer a {
+            color: #e94560;
+        }
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💖 Lovely Lorena</h1>
+            <p class="subtitle">Website Archive - Images & Blog Articles</p>
+        </header>
+
+        <div class="section">
+            <h2>📊 Project Statistics</h2>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number">57</div>
+                    <div class="label">Images</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">11</div>
+                    <div class="label">Blog Articles</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">12</div>
+                    <div class="label">Pages Scraped</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📁 Image Gallery</h2>
+            <div class="grid">
+                <div class="folder-card">
+                    <div class="folder-icon">🏠</div>
+                    <h3>Home Page</h3>
+                    <p>5 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">👋</div>
+                    <h3>Welcome</h3>
+                    <p>9 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">👤</div>
+                    <h3>About Me</h3>
+                    <p>3 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">🖼️</div>
+                    <h3>Gallery Pages 1-4</h3>
+                    <p>33 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">📋</div>
+                    <h3>Etiquette</h3>
+                    <p>1 image</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">💰</div>
+                    <h3>Rates</h3>
+                    <p>3 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">📞</div>
+                    <h3>Contact</h3>
+                    <p>1 image</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">📝</div>
+                    <h3>Blog</h3>
+                    <p>3 images</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-icon">🔗</div>
+                    <h3>Links</h3>
+                    <p>2 images</p>
+                </div>
+            </div>
+            <a href="downloaded_images/" class="download-btn">Browse Images</a>
+        </div>
+
+        <div class="section">
+            <h2>📝 Blog Articles</h2>
+            <ul class="blog-list">
+                <li>📄 <a href="Blog/Springtime%20Companionship.txt">Springtime Companionship</a></li>
+                <li>📄 <a href="Blog/Happy%20Chinese%20New%20Year.txt">Happy Chinese New Year</a></li>
+                <li>📄 <a href="Blog/The%20Complete%20Package.txt">The Complete Package</a></li>
+                <li>📄 <a href="Blog/If%20You're%20Horny…%20Let's%20Do%20It!.txt">If You're Horny… Let's Do It!</a></li>
+                <li>📄 <a href="Blog/Amazing%201010%20Trip%20to%20Amsterdam%20and%20London.txt">Amazing 10/10 Trip to Amsterdam and London</a></li>
+                <li>📄 <a href="Blog/30%20Ways%20to%20Live%20Life%20Fuller.txt">30 Ways to Live Life Fuller</a></li>
+                <li>📄 <a href="Blog/March%20Madness.txt">March Madness</a></li>
+                <li>📄 <a href="Blog/78%20on%20Top%20100%20Escort%20Countdown.txt">#78 on Top 100 Escort Countdown</a></li>
+                <li>📄 <a href="Blog/Las%20Vegas%20Best%20GFE%20Lovely%20Lorena.txt">Las Vegas Best GFE Lovely Lorena</a></li>
+                <li>📄 <a href="Blog/As%20Las%20Vegas%20Top%20GFE%20I%20welcome%20you%20into%20How%20I%20live%20life%20as%20Lovely%20Lorena%20De%20Leon.txt">As Las Vegas Top GFE I Welcome You</a></li>
+                <li>📄 <a href="Blog/Inspirational%20Quote%20by%20Pope%20John%20XXIII.txt">Inspirational Quote by Pope John XXIII</a></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📦 Downloads</h2>
+            <p>Download all images as a single ZIP file:</p>
+            <a href="lovelylorena_images.zip" class="download-btn">⬇️ Download All Images (11MB)</a>
+        </div>
+
+        <footer>
+            <p>Scraped from <a href="https://lovelylorena.com" target="_blank">lovelylorena.com</a></p>
+            <p style="margin-top: 10px;">GitHub: <a href="https://github.com/MeeMeeginger/Lovely-Lorena" target="_blank">MeeMeeginger/Lovely-Lorena</a></p>
+        </footer>
+    </div>
+</body>
+</html>
