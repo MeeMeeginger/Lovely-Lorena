@@ -5,37 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lovely Lorena - Website Archive</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             color: #fff;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
         h1 {
             font-size: 3rem;
             background: linear-gradient(90deg, #e94560, #ff6b6b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            cursor: pointer;
         }
-        .subtitle {
-            color: #888;
-            font-size: 1.2rem;
-        }
+        .subtitle { color: #888; font-size: 1.2rem; }
         .section {
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
@@ -43,14 +30,10 @@
             margin-bottom: 30px;
             backdrop-filter: blur(10px);
         }
-        .section h2 {
-            color: #e94560;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
+        .section h2 { color: #e94560; margin-bottom: 20px; font-size: 1.8rem; }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 15px;
         }
         .folder-card {
@@ -60,196 +43,578 @@
             padding: 20px;
             text-align: center;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         .folder-card:hover {
-            background: rgba(233, 69, 96, 0.2);
+            background: rgba(233, 69, 96, 0.25);
             transform: translateY(-5px);
+            border-color: rgba(233, 69, 96, 0.6);
         }
-        .folder-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .folder-card h3 {
-            font-size: 1rem;
-            color: #fff;
-        }
-        .folder-card p {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 5px;
-        }
-        .blog-list {
-            list-style: none;
-        }
+        .folder-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .folder-card h3 { font-size: 1rem; color: #fff; }
+        .folder-card p { font-size: 0.8rem; color: #aaa; margin-top: 5px; }
+        .blog-list { list-style: none; }
         .blog-list li {
-            padding: 15px;
+            padding: 15px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             gap: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 8px;
         }
-        .blog-list li:last-child {
-            border-bottom: none;
-        }
-        .blog-list a {
-            color: #ff6b6b;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-        .blog-list a:hover {
-            color: #e94560;
-            text-decoration: underline;
-        }
-        .stats {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+        .blog-list li:hover { background: rgba(233, 69, 96, 0.15); }
+        .blog-list li:last-child { border-bottom: none; }
+        .blog-title { color: #ff6b6b; font-size: 1.1rem; flex: 1; }
+        .blog-date { color: #888; font-size: 0.85rem; white-space: nowrap; }
+        .blog-icon { font-size: 1.2rem; }
+        .stats { display: flex; gap: 30px; flex-wrap: wrap; }
         .stat-box {
             background: rgba(255,255,255,0.05);
             padding: 20px 30px;
             border-radius: 10px;
             text-align: center;
         }
-        .stat-box .number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #e94560;
+        .stat-box .number { font-size: 2.5rem; font-weight: bold; color: #e94560; }
+        .stat-box .label { color: #888; font-size: 0.9rem; }
+        footer { text-align: center; padding: 30px; color: #666; margin-top: 50px; }
+        footer a { color: #e94560; }
+
+        /* ===== LIGHTBOX / GALLERY VIEWER ===== */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            overflow-y: auto;
         }
-        .stat-box .label {
+        .lightbox-overlay.active { display: flex; flex-direction: column; }
+        .lightbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+        .lightbox-header h2 { color: #e94560; font-size: 1.5rem; }
+        .lightbox-close {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 1.5rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .lightbox-close:hover { background: rgba(233, 69, 96, 0.4); }
+        .lightbox-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            flex: 1;
+        }
+        .lightbox-main-image {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 10px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .lightbox-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .lightbox-nav button {
+            background: rgba(233, 69, 96, 0.3);
+            border: 1px solid rgba(233, 69, 96, 0.5);
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .lightbox-nav button:hover { background: rgba(233, 69, 96, 0.6); }
+        .lightbox-nav .counter { color: #aaa; font-size: 1rem; }
+        .thumbnail-strip {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 100%;
+            padding: 10px 0;
+        }
+        .thumbnail-strip img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+        .thumbnail-strip img:hover { opacity: 0.9; }
+        .thumbnail-strip img.active {
+            border-color: #e94560;
+            opacity: 1;
+        }
+
+        /* ===== BLOG READER ===== */
+        .blog-reader-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .blog-reader-overlay.active { display: flex; flex-direction: column; }
+        .blog-reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+        .blog-reader-header h2 { color: #e94560; font-size: 1.3rem; }
+        .blog-reader-body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+        .blog-reader-body .blog-meta {
             color: #888;
             font-size: 0.9rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            margin-top: 50px;
-        }
-        footer a {
-            color: #e94560;
-        }
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #e94560, #ff6b6b);
+        .blog-reader-body .blog-content p { margin-bottom: 15px; }
+
+        /* ===== BACK BUTTON ===== */
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 20px;
-            transition: transform 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
         }
-        .download-btn:hover {
-            transform: scale(1.05);
+        .back-btn:hover { background: rgba(233, 69, 96, 0.4); }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .lightbox-main-image { max-width: 98%; }
+            .thumbnail-strip img { width: 60px; height: 60px; }
+            .blog-list li { flex-direction: column; align-items: flex-start; gap: 5px; }
         }
     </style>
 <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="mainContent">
         <header>
-            <h1>💖 Lovely Lorena</h1>
-            <p class="subtitle">Website Archive - Images & Blog Articles</p>
+            <h1 onclick="goHome()">💖 Lovely Lorena</h1>
+            <p class="subtitle">Website Archive — Images & Blog Articles</p>
         </header>
 
         <div class="section">
             <h2>📊 Project Statistics</h2>
             <div class="stats">
-                <div class="stat-box">
-                    <div class="number">57</div>
-                    <div class="label">Images</div>
-                </div>
-                <div class="stat-box">
-                    <div class="number">11</div>
-                    <div class="label">Blog Articles</div>
-                </div>
-                <div class="stat-box">
-                    <div class="number">12</div>
-                    <div class="label">Pages Scraped</div>
-                </div>
+                <div class="stat-box"><div class="number">57</div><div class="label">Images</div></div>
+                <div class="stat-box"><div class="number">11</div><div class="label">Blog Articles</div></div>
+                <div class="stat-box"><div class="number">12</div><div class="label">Pages Scraped</div></div>
             </div>
         </div>
 
         <div class="section">
             <h2>📁 Image Gallery</h2>
-            <div class="grid">
-                <div class="folder-card">
-                    <div class="folder-icon">🏠</div>
-                    <h3>Home Page</h3>
-                    <p>5 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">👋</div>
-                    <h3>Welcome</h3>
-                    <p>9 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">👤</div>
-                    <h3>About Me</h3>
-                    <p>3 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">🖼️</div>
-                    <h3>Gallery Pages 1-4</h3>
-                    <p>33 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">📋</div>
-                    <h3>Etiquette</h3>
-                    <p>1 image</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">💰</div>
-                    <h3>Rates</h3>
-                    <p>3 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">📞</div>
-                    <h3>Contact</h3>
-                    <p>1 image</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">📝</div>
-                    <h3>Blog</h3>
-                    <p>3 images</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-icon">🔗</div>
-                    <h3>Links</h3>
-                    <p>2 images</p>
-                </div>
-            </div>
-            <a href="downloaded_images/" class="download-btn">Browse Images</a>
+            <p style="color:#aaa; margin-bottom:20px;">Click any section to browse images</p>
+            <div class="grid" id="galleryGrid"></div>
         </div>
 
         <div class="section">
             <h2>📝 Blog Articles</h2>
-            <ul class="blog-list">
-                <li>📄 <a href="Blog/Springtime%20Companionship.txt">Springtime Companionship</a></li>
-                <li>📄 <a href="Blog/Happy%20Chinese%20New%20Year.txt">Happy Chinese New Year</a></li>
-                <li>📄 <a href="Blog/The%20Complete%20Package.txt">The Complete Package</a></li>
-                <li>📄 <a href="Blog/If%20You're%20Horny…%20Let's%20Do%20It!.txt">If You're Horny… Let's Do It!</a></li>
-                <li>📄 <a href="Blog/Amazing%201010%20Trip%20to%20Amsterdam%20and%20London.txt">Amazing 10/10 Trip to Amsterdam and London</a></li>
-                <li>📄 <a href="Blog/30%20Ways%20to%20Live%20Life%20Fuller.txt">30 Ways to Live Life Fuller</a></li>
-                <li>📄 <a href="Blog/March%20Madness.txt">March Madness</a></li>
-                <li>📄 <a href="Blog/78%20on%20Top%20100%20Escort%20Countdown.txt">#78 on Top 100 Escort Countdown</a></li>
-                <li>📄 <a href="Blog/Las%20Vegas%20Best%20GFE%20Lovely%20Lorena.txt">Las Vegas Best GFE Lovely Lorena</a></li>
-                <li>📄 <a href="Blog/As%20Las%20Vegas%20Top%20GFE%20I%20welcome%20you%20into%20How%20I%20live%20life%20as%20Lovely%20Lorena%20De%20Leon.txt">As Las Vegas Top GFE I Welcome You</a></li>
-                <li>📄 <a href="Blog/Inspirational%20Quote%20by%20Pope%20John%20XXIII.txt">Inspirational Quote by Pope John XXIII</a></li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>📦 Downloads</h2>
-            <p>Download all images as a single ZIP file:</p>
-            <a href="lovelylorena_images.zip" class="download-btn">⬇️ Download All Images (11MB)</a>
+            <p style="color:#aaa; margin-bottom:20px;">Click any article to read it</p>
+            <ul class="blog-list" id="blogList"></ul>
         </div>
 
         <footer>
             <p>Scraped from <a href="https://lovelylorena.com" target="_blank">lovelylorena.com</a></p>
-            <p style="margin-top: 10px;">GitHub: <a href="https://github.com/MeeMeeginger/Lovely-Lorena" target="_blank">MeeMeeginger/Lovely-Lorena</a></p>
+            <p style="margin-top:10px;">GitHub: <a href="https://github.com/MeeMeeginger/Lovely-Lorena" target="_blank">MeeMeeginger/Lovely-Lorena</a></p>
         </footer>
     </div>
+
+    <!-- Lightbox Overlay -->
+    <div class="lightbox-overlay" id="lightbox">
+        <div class="lightbox-header">
+            <h2 id="lightboxTitle">Gallery</h2>
+            <button class="lightbox-close" onclick="closeLightbox()">✕ Close</button>
+        </div>
+        <div class="lightbox-body">
+            <img class="lightbox-main-image" id="lightboxImage" src="" alt="Gallery Image">
+            <div class="lightbox-nav">
+                <button onclick="prevImage()">◀ Prev</button>
+                <span class="counter" id="imageCounter">1 / 1</span>
+                <button onclick="nextImage()">Next ▶</button>
+            </div>
+            <div class="thumbnail-strip" id="thumbnailStrip"></div>
+        </div>
+    </div>
+
+    <!-- Blog Reader Overlay -->
+    <div class="blog-reader-overlay" id="blogReader">
+        <div class="blog-reader-header">
+            <h2 id="blogReaderTitle">Article</h2>
+            <button class="lightbox-close" onclick="closeBlogReader()">✕ Close</button>
+        </div>
+        <div class="blog-reader-body" id="blogReaderBody"></div>
+    </div>
+
+<script>
+// ===== IMAGE DATA =====
+const galleries = {
+    "Home Page": {
+        icon: "🏠",
+        images: [
+            "downloaded_images/Home_Page/001_header2-copy.jpg",
+            "downloaded_images/Home_Page/002_ISEESEXY_LdL_WEB_5.jpg",
+            "downloaded_images/Home_Page/003_ISEESEXY_LdL_WEB_4.jpg",
+            "downloaded_images/Home_Page/004_ISEESEXY_LdL_WEB_3.jpg",
+            "downloaded_images/Home_Page/005_preferredSeal.png"
+        ]
+    },
+    "Welcome": {
+        icon: "👋",
+        images: [
+            "downloaded_images/Welcome/001_logo.png",
+            "downloaded_images/Welcome/002_header2.jpg",
+            "downloaded_images/Welcome/003_1.jpg",
+            "downloaded_images/Welcome/004_IseeSexyLdL_WEB_10.jpg",
+            "downloaded_images/Welcome/005_IseeSexyLdL_WEB_9.jpg",
+            "downloaded_images/Welcome/006_dlweb24.jpg",
+            "downloaded_images/Welcome/007_ldweb28-1.jpg",
+            "downloaded_images/Welcome/008_dlweb9.jpg",
+            "downloaded_images/Welcome/009_IseeSexy9.jpg"
+        ]
+    },
+    "About Me": {
+        icon: "👤",
+        images: [
+            "downloaded_images/About_Me/003_ldweb10.jpg",
+            "downloaded_images/About_Me/004_casualattire.jpg",
+            "downloaded_images/About_Me/005_obit_betty_willis.jpg"
+        ]
+    },
+    "Gallery Page 1": {
+        icon: "🖼️",
+        images: [
+            "downloaded_images/Gallery_Page_1/001_BAGL7688.jpg-Copy-1.jpg",
+            "downloaded_images/Gallery_Page_1/002_lorenachairweb800.jpg",
+            "downloaded_images/Gallery_Page_1/003_lorenaheadpoolweb800.jpg",
+            "downloaded_images/Gallery_Page_1/004_ISEESEXY_LdL_WEB_9.jpg",
+            "downloaded_images/Gallery_Page_1/005_ISEESEXY_LdL_WEB_7.jpg",
+            "downloaded_images/Gallery_Page_1/006_lovely6.jpg",
+            "downloaded_images/Gallery_Page_1/007_BAGL7706.jpg-Copy-1.jpg",
+            "downloaded_images/Gallery_Page_1/008_ISEESEXY_LdL_WEB_1.jpg",
+            "downloaded_images/Gallery_Page_1/009_IseeSexy18.jpg"
+        ]
+    },
+    "Gallery Page 2": {
+        icon: "🖼️",
+        images: [
+            "downloaded_images/Gallery_Page_2/001_IseeSexyLdL10.jpg",
+            "downloaded_images/Gallery_Page_2/002_IseeSexyLdL3.jpg",
+            "downloaded_images/Gallery_Page_2/003_IseeSexy14.jpg",
+            "downloaded_images/Gallery_Page_2/004_lorenaloliweb800.jpg",
+            "downloaded_images/Gallery_Page_2/005_Lovely2.jpg",
+            "downloaded_images/Gallery_Page_2/007_IseeSexyLdL6.jpg",
+            "downloaded_images/Gallery_Page_2/008_BAGL7338.jpg-Copy-1.jpg",
+            "downloaded_images/Gallery_Page_2/009_IseeSexy15.jpg"
+        ]
+    },
+    "Gallery Page 3": {
+        icon: "🖼️",
+        images: [
+            "downloaded_images/Gallery_Page_3/002_IseeSexy12.jpg",
+            "downloaded_images/Gallery_Page_3/003_BAGL7187.jpg-Copy-1.jpg",
+            "downloaded_images/Gallery_Page_3/004_danachocholateweb800.jpg",
+            "downloaded_images/Gallery_Page_3/005_IseeSexy3.jpg",
+            "downloaded_images/Gallery_Page_3/006_IseeSexyLdL_WEB_5.jpg",
+            "downloaded_images/Gallery_Page_3/009_IseeSexyLdL_WEB_3.jpg"
+        ]
+    },
+    "Gallery Page 4": {
+        icon: "🖼️",
+        images: [
+            "downloaded_images/Gallery_Page_4/001_ISEESEXY_LdL_WEB_10.jpg",
+            "downloaded_images/Gallery_Page_4/002_ISEESEXY_LdL_WEB_8.jpg",
+            "downloaded_images/Gallery_Page_4/003_danalingerieweb800.jpg",
+            "downloaded_images/Gallery_Page_4/005_BAGL7305.jpg-copy-3.jpg",
+            "downloaded_images/Gallery_Page_4/006_IseeSexy9.jpg",
+            "downloaded_images/Gallery_Page_4/007_danaplanshadowweb8002.jpg",
+            "downloaded_images/Gallery_Page_4/008_IseeSexyLdL_WEB_2.jpg"
+        ]
+    },
+    "Etiquette": {
+        icon: "📋",
+        images: [
+            "downloaded_images/Etiquette/003_LdL10.jpg"
+        ]
+    },
+    "Rates": {
+        icon: "💰",
+        images: [
+            "downloaded_images/Rates/003_seesexyldl8a.jpg",
+            "downloaded_images/Rates/004_IseeSexy18.jpg",
+            "downloaded_images/Rates/005_gifts-crop.jpg"
+        ]
+    },
+    "Contact": {
+        icon: "📞",
+        images: [
+            "downloaded_images/Contact/003_lorenarippedtankweb800.jpg"
+        ]
+    },
+    "Blog": {
+        icon: "📝",
+        images: [
+            "downloaded_images/Blog/003_Asain-sign.jpg",
+            "downloaded_images/Blog/004_lorenalingeriebathroomweb800.jpg",
+            "downloaded_images/Blog/005_LorenaCouch.jpg"
+        ]
+    },
+    "Links": {
+        icon: "🔗",
+        images: [
+            "downloaded_images/Links/003_lovelylorena-banner-Las-Vegas-Milf-Mature-las-Vegas-Escort-Las-Vegas-Model.jpg",
+            "downloaded_images/Links/004_ldlweb001w.jpg"
+        ]
+    }
+};
+
+// ===== BLOG DATA =====
+const blogArticles = [
+    {
+        title: "Springtime Companionship",
+        date: "May 30, 2018",
+        category: "Uncategorized",
+        content: `<p>Las Vegas Elite Companion: Lovely Lorena</p><p>Exotic Mature Busty Fit Brunette Companion GFE and Model</p><p>Although spring officially started, I paused today for a few moments to let all of my senses take in the world around me. The early day darkness of winter has faded, light returns and fills me full of energy.</p><p>My morning exercise routines have been exceptionally revitalizing and I realized, "Everything begins to come back to Life in spring".</p><p>The Smell of the air changes, trees are in bloom, grass is growing, Mother Nature is doing her thing. Spring is a physical time of the year and sexual energy upsurges. The natural world is alive and buzzing and I can feel a primal seasonal urge. My winter clothes are tucked safely away and I start thinking about being in swimwear on the beach, spring time dresses, low cut blouses, form fitting cloths, and silky lingerie.</p><p>Take a moment. Relax and feel the natural energy surge through you.</p><p>Breath in. Exhale.</p><p>Use that spark of life that you're feeling and follow it. Indulge. Seize that energy that is YOU, that is pushing you forward to be energized and be better than you are now. This IS the right moment. Celebrate. Celebrate the energy and follow your instincts and step boldly toward a rewarding experience with the Very Best Companion Las Vegas has to offer! ME. I'm here. Celebrating that energy with you. Let's both follow Mother Natures energy and celebrate together. Come to see me. If we have not indulged together, isn't it time that we did.</p><p><strong>Now is the perfect time!</strong></p>`
+    },
+    {
+        title: "Happy Chinese New Year",
+        date: "Feb 17, 2018",
+        category: "Inspiration",
+        content: `<p>Chinese New Year 2018 "Year of the Dog" celebration begins today, February 16 and goes thru March 2nd. The New Year starts each year on the second new moon after the winter solstice (shortest day of the year) and continues to the full moon.</p><p>Dogs are the eleventh sign of the zodiac. I feel a special connection to the year of the Dog (besides I do like dogs). The Chinese would say, the dogs are sincere, loyal, independent, and decisive, who aren't afraid of life's difficulties. Because of these characteristics they also enjoy harmonious relationships with those around them. Traits which I have strived for and I believe I've succeeded in accomplishing in my life along with other traits such as a genuine passion for what I do.</p><p>The celebrations and activities are abundant with many vibrant colors, lighted lanterns, dragons, dancing, fire crackers and so much more. Just use your search engine to look for Chinese New Year activities. You may be amazed at how many there are.</p><p>I've always enjoyed the excitement, atmosphere, brilliant colors and flowers, and displays surrounding the Chinese New Year celebration. Come out and enjoy some of the activities. I'll be out there as much as I can, so say hi when you see me.</p>`
+    },
+    {
+        title: "The Complete Package",
+        date: "Sep 11, 2017",
+        category: "GFE",
+        content: `<p>Amidst the noisy confusion of life, something incredible is about to happen. You see, I represent a profound source of pleasure that will wash over you like the entire ocean in a single drop. I like to share with my gentlemen friends the unmistakable ability to truly dwell in the present moment. Be prepared to abandon your worries for it will be only the desire to re-invent yourself that remains.</p><p>Womanly yet intellectual, I am also wise and discerning in ways that will pleasantly catch your attention. A warm heart is as powerful as an aphrodisiac and an intelligent mind. Yet, this California girl begins each day with meditation followed by a strict exercise regime that maintains a perfectly sculpted figure.</p><p>My Brazilian/European heritage lends to charms that are sublimely exotic and a disposition that radiates inner stillness and sincerity. Flowing auburn tresses cascade down my back while lean curves come dangerously close to perfection.</p><p>With a fierce attraction to the finer things in life, looking like a million bucks in a cocktail dress or string bikini comes effortlessly.</p><p>Would you think of me as a paradox? Maybe that is why friends refer to me as the epitome of female mystique!</p><p>Quiet strength lies in gentleness. Companionship is an art form that I express as effortlessly as the ingress and egress of the ocean.</p><p>I am inclined toward luxurious dinner dates and opulent weekend getaways that call upon my enjoyment as a professional entertainer. The girlfriend in me always finds the genius in an erotic rendezvous!</p><p>Whether it is a glamorous excursion at a five-star destination or a debaucheries weekend indoors know that I will dress bewitchingly. When the occasion calls for a twist, one of my beautiful girlfriends will complete a trio of pure ecstasy. The duality in me tends to bond with women on a deeply intimate level. There is no telling how far we will go!</p><p>When it is time to heighten your sensibilities with a dynamic and sensuous courtesan, follow where your destiny leads… <strong>Into my arms</strong></p>`
+    },
+    {
+        title: "If You're Horny… Let's Do It!",
+        date: "Jul 18, 2017",
+        category: "Media",
+        content: `<p>I love this song and had to just post on my blog… If you're Horny… Lets Do it!</p><p>Enjoy and think of me with Just the music!!</p>`
+    },
+    {
+        title: "Amazing 10/10 Trip to Amsterdam and London",
+        date: "Jul 10, 2017",
+        category: "Memoirs",
+        content: `<p>I just Returned From An Amazing 10/10 trip to Amsterdam and London</p><p>Originally posted on October 1, 2014 at 1:06 am</p><p>Thank You to a very special man that has changed how I view the world. I've always lived as though the world is my oyster and a pearl is within all.</p><p>Yes, I have been blessed by many friends, couples, and some of the most genuine, loving, and sincere gentleman.</p><p>I've been able to travel to Cabo, Chicago, New York City, Aruba etc..</p><p>The one that will probably (hate to say I'll never see anyplace else) is my trip to Amsterdam and London.</p><p>I privileged to fly 1st class the entire flight from Las Vegas to Europe. Some may not realize the enormity or scoff at this yet, this woman is honored, humbled, and plain out right grateful!!</p><p>The man I speak of is so special and has treated me like his queen. Some may say the hobby holds no love f… I strongly disagree!</p><p>I don't want to speak more of this person because I don't want him to make our scenario public. Yet, Mr. ??? – Know you are a once in a lifetime!</p><p>Good things come to those who wait. I strongly believe in karma and having had been touched by many angels and saints. You are priceless!!</p><p>Much adoration and love from your little Slixa woman :-))</p>`
+    },
+    {
+        title: "30 Ways to Live Life Fuller",
+        date: "Jul 7, 2017",
+        category: "Live_Life_Fuller",
+        content: `<p>I Loved this 30 Ways to Live life Fuller. xoxo Lovely Lorena De Leon</p><p><strong>30 Ways you can self-love and live life fuller:</strong></p><ol style="padding-left:20px;line-height:2;"><li>Watch nature. Concentrate on the opening of flowers, the smell of earth, feel of the ocean and allow perspective to settle in.</li><li>Talk to an old person about what's important in life. 80+ years later, they usually have a better view of what to focus your energy on.</li><li>Let go of all thoughts that make you feel small and listen to the ones that empower you.</li><li>Get rid of any guilt, especially in achieving your goals or doing something you truly want to do.</li><li>Do something nice or surprise someone you love like your spouse or lover. The more you give unconditionally to the person you have the most expectations from, the more you will feel freedom in your heart.</li><li>Release your fears, all of them. Fear of the unknown, of the future, of the larger picture. Fear is a block in your so-called life path. Walk down it and let things fall into place.</li><li>Don't regret a thing. Remember, there are no regrets in life, just lessons learned.</li><li>Stop worrying about what's not in your control.</li><li>Instead of doubting where you are in life, ask yourself where you want to go.</li><li>Remember that blaming anyone or something else will never change anything. If you don't like something, you have two choices, accept it or change it yourself.</li><li>Turn off the noise and feelings of unworthiness. You are not damaged, you matter and the world needs you, just the way you are.</li><li>Dance daily, and freely, as the good ol' saying goes, 'like no one is watching.' Boogie down with truth.</li><li>Remember that your dreams matter. Chase them.</li><li>Put yourself first.</li><li>Forget about where everyone else is, how happy they are, what they are doing better than you. Your journey is going to right where you need to be, and it will be your version of perfect.</li><li>Remember that nothing is perfect.</li><li>There's no right or wrong way, for anything. Life is rich and full of contrast, explore and enjoy it.</li><li>Let go of your expectations of people, things, places, events. Be present and it will feel just right, whatever and wherever it is.</li><li>Turn off the old record of your past. Sing a new song.</li><li>Don't sweat the small stuff, but rather, enjoy the little things in life.</li><li>Observe life through the eyes of a child. Pure joy.</li><li>Release anger towards friend's family, lovers…past and current. Forgive them, and feel the happiness you deserve.</li><li>Let go of the demands to do, do, do. Do what you can, and call it your best, instead of needing to constantly do more.</li><li>Express gratitude, always.</li><li>You don't have to nor will you know everything. Part of the fun is learning on the way.</li><li>Money can't buy happiness. Find ways to pay off your debt so instead of focusing on the moola, you can focus on the true abundance of life and many fruits you already have.</li><li>Your eyes will always remain down if you feel sorry for yourself. Shift your view towards the sky.</li><li>You can't save or change everyone. Work on yourself and as Gandhi says, be the change you wish to see in the world.</li><li>Stop trying to please everyone to be liked or accepted. You are you: unique and be true to that.</li><li>Don't be a hater…especially of yourself. Love every inch of your body, every amazing way you shine in this world and find freedom in loving yourself, just as you are.</li></ol>`
+    },
+    {
+        title: "March Madness",
+        date: "Mar 13, 2018",
+        category: "GFE",
+        content: `<p>NCAA March Madness is here again. Las Vegas will be buzzing with excitement during the games. There are many different places to watch, some are free and others are VIP paid locations.</p><p>Whether your here for the First Round March 15th and 16th, Second round on March 17 & 18. The Sweet 16, on March 22nd, Elite Eight, March 24th and 25th, the Final Four on March 31 or the Championship on April 2nd. Don't forget to get in some real relaxation time! There is plenty of time between and after the games to have some real Las Vegas Fun.</p><p>If you looking for the best dinner date partner in Las Vegas, a companion to see a show with, want someone to escort you around town, someone to be on your arm while you're watching your big game, or just a relaxing evening for 2….You've found me. Don't miss a chance to see me! Indoor sports have always been a favorite of mine!</p>`
+    },
+    {
+        title: "#78 on Top 100 Escort Countdown",
+        date: "Feb 14, 2018",
+        category: "GFE",
+        content: `<p>I found this review and wanted to share it with you.</p><p>According to the Top 100 Escort Countdown:</p><p><em>"Lovely is an understatement. Luscious, lust-worthy Lorena with her latte colored skin and chocolate-toffee cascade of hair is positively… edible as far as we can tell. Very tasty. Basically the "Girl from Ipanema" in living color and made available by some lucky trick of fate. The fact that this girl is not locked up in somebody's mansion by now is incredible; but then again she's not just a pretty face, a sculptural body and a pouty mouthed fantasy come to life. Lovely Lorena is a savvy businesswoman and a world traveler. She's not "just an escort" and that is refreshing."</em></p><p><em>"Lorena embraces her sexual nature unapologetically, she surrenders fully to the pleasure of a shared moment and its written all over her face that she genuinely enjoys this part of her life."</em></p><p><em>"The role of wanton seductress is just one more part of her personality; this gem is multi faceted. The view is fantastic, she has the classic Brazilian figure that makes us want to pack up and move to Rio: long and slender all over, cinched waist, amazing rear view and show stopping breasts. Then that face; generous, provocative mouth and exotic dark eyes… Beyond lovely, we'd say she's stunning."</em></p>`
+    },
+    {
+        title: "Las Vegas Best GFE Lovely Lorena",
+        date: "Jul 28, 2017",
+        category: "GFE",
+        content: `<p>I heard she has quickly become one of the most sought after escorts, she somehow has been able to find the time to meet and please all of her returning customers as well as attracting, and keeping, brand new customers. She gets off on being one of the best escorts in Las Vegas and strives hard to maintain that title. But don't worry, she's not in it for the titles, but rather she has a natural passion for all of her clients and that is just one of the main reasons she is so popular.</p><p>The other reason why she is so popular is, as you have probably guessed from looking at her photos, her killer body. Taking a cursory view of Lorena from top to bottom you can tell from the start that she is not your average Las Vegas escort. Her dark brunette hair flows all the way down her back, leading you to check out her smooth skin, which through much care on her part, has a nice bronze all over and is like touching flowing silk. Lorena is a Las Vegas escort that strives to make sure she is toned but also retains that playful feminine touch that makes her a joy to be intimate with.</p><p>It is no lie to say that her body, from face to ass, breasts to legs, is one of the best kept in all of Las Vegas.</p><p>Moving past the more topical aspects of the lovely Lorena, going out on a date with her is the true chance to see what's below the surface of this beauty.</p><p>Unlike other escorts in Las Vegas, Lorena is one of the women that can hold her own in a conversation and get it going towards topics that will surprise and delight you. Hopefully you won't be falling too head over heels and will still be able to respond to all of her smart quips and just overall fun demeanor.</p><p>If you're new to the Vegas experience or have been there before but want to really explore the city, then do so with the "Lovely Lorena" aka "Lorena De Leon" She is the perfect way to experience the city unlike any other way available to you. Sure you could take a tour bus and see all the family friendly hot spots of Vegas, or you could enjoy Lorena De Leon. It's up to you where you want to go, and if you find a place where you can have fun with an escort, just stay there. It's that easy once you're in the company of a woman such as Lorena, she knows her way around the city and how to keep a man happy.</p><p><strong>Only she can give an experience that most other escorts in Las Vegas wish they could provide.</strong></p><p>Las Vegas VIP Travel Courtesan</p><p>Truly considered one of Las Vegas TOP GFE</p>`
+    },
+    {
+        title: "As Las Vegas Top GFE I Welcome You",
+        date: "Jul 10, 2017",
+        category: "GFE",
+        content: `<p>LAS VEGAS ESCORT GFE</p><p>As an established Companion in Las Vegas I take pride in living each day to the fullest!</p><p>Many people wonder about how a companion lives on a day to day basis. I can't speak for others so I will speak on my behalf.</p><p>I live life on life's terms. I'm not motivated by greed nor animosity. I live as a woman that wants to strive to be the best she can be. I take my companionship in Las Vegas seriously. I stay healthy in mind, body and spirit. I surround myself with healthy people that are like minded… motivated to succeed in whatever adventure they undertake. I shy away from those that are not positive influences on me or society.</p><p>There are many misconceptions about what brings us into this industry. I can say for certainty that I would never have in a million years believed that in my late 30's I would be one of Las Vegas top tier / reviewed Companions, Courtesans, GFE whatever you want to call it.</p><p>My 20's were not in this industry and I am grateful that my 20's were so blessed and my life was charmed. I had no problems nor do I now. My point is that I don't think I would have been as healthy minded had I started this industry in my 20's.</p><p>I learned to live with passion and with no boundaries or limitations in my 20's. I rocked, I am generation X to the fullest. I got tattoos when they were not an everyday occurrence as they are today.</p><p>I lived!!! I mean I lived!!! LOL.</p><p>I surfed, I worked hard, played hard, saw the great things life had to offer as a civvy. I ran and operated a successful business in a small town and I loved it!!</p><p>I lived by my own rules!</p><p>Now, I am accountable to another human being… yes, one of life's beauties… offspring, as everyone knows that being a full time parent is not easy yet worthwhile more than any job in this world..</p><p>I have made sacrifices. I'm proud of my sacrifices. I am where I am today because I feel my journey is one of inspiration plus dedication.</p><p>I will continue to blog about how I am so grateful for all the people I have encountered and for the ones I am about to meet. Stay tuned my blogging has just begun to spring into full mode.</p><p>Lovingly,<br>Las Vegas Lovely Lorena</p>`
+    },
+    {
+        title: "Inspirational Quote by Pope John XXIII",
+        date: "Jul 10, 2017",
+        category: "Inspiration",
+        content: `<p>An inspirational quote By Pope John XXIII.. We all need affirmations.. No Matter what Denomination</p><blockquote style="border-left:3px solid #e94560;padding-left:20px;margin:20px 0;font-style:italic;color:#ff6b6b;font-size:1.2rem;">"Consult not your fears but your hopes and your dreams. Think not about your frustrations, but about your unfulfilled potential. Concern yourself not with what you tried and failed in, but with what it is still possible for you to do."</blockquote><p style="text-align:right;color:#aaa;">— Pope John XXIII</p>`
+    }
+];
+
+// ===== RENDER GALLERY GRID =====
+function renderGalleryGrid() {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    for (const [name, data] of Object.entries(galleries)) {
+        const card = document.createElement('div');
+        card.className = 'folder-card';
+        card.onclick = () => openLightbox(name);
+        card.innerHTML = `
+            <div class="folder-icon">${data.icon}</div>
+            <h3>${name}</h3>
+            <p>${data.images.length} image${data.images.length !== 1 ? 's' : ''}</p>
+        `;
+        grid.appendChild(card);
+    }
+}
+
+// ===== RENDER BLOG LIST =====
+function renderBlogList() {
+    const list = document.getElementById('blogList');
+    list.innerHTML = '';
+    blogArticles.forEach((article, idx) => {
+        const li = document.createElement('li');
+        li.onclick = () => openBlogReader(idx);
+        li.innerHTML = `
+            <span class="blog-icon">📄</span>
+            <span class="blog-title">${article.title}</span>
+            <span class="blog-date">${article.date}</span>
+        `;
+        list.appendChild(li);
+    });
+}
+
+// ===== LIGHTBOX =====
+let currentGallery = '';
+let currentImageIndex = 0;
+
+function openLightbox(galleryName) {
+    currentGallery = galleryName;
+    currentImageIndex = 0;
+    const overlay = document.getElementById('lightbox');
+    document.getElementById('lightboxTitle').textContent = galleryName;
+    renderThumbnails();
+    showImage(0);
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function renderThumbnails() {
+    const strip = document.getElementById('thumbnailStrip');
+    strip.innerHTML = '';
+    galleries[currentGallery].images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img;
+        thumb.alt = `Thumbnail ${idx + 1}`;
+        thumb.onclick = () => showImage(idx);
+        if (idx === currentImageIndex) thumb.classList.add('active');
+        strip.appendChild(thumb);
+    });
+}
+
+function showImage(idx) {
+    const images = galleries[currentGallery].images;
+    currentImageIndex = idx;
+    document.getElementById('lightboxImage').src = images[idx];
+    document.getElementById('imageCounter').textContent = `${idx + 1} / ${images.length}`;
+    // Update thumbnail active state
+    const thumbs = document.querySelectorAll('.thumbnail-strip img');
+    thumbs.forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+    });
+}
+
+function nextImage() {
+    const images = galleries[currentGallery].images;
+    showImage((currentImageIndex + 1) % images.length);
+}
+
+function prevImage() {
+    const images = galleries[currentGallery].images;
+    showImage((currentImageIndex - 1 + images.length) % images.length);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('lightbox').classList.contains('active')) {
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'Escape') closeLightbox();
+    }
+    if (document.getElementById('blogReader').classList.contains('active')) {
+        if (e.key === 'Escape') closeBlogReader();
+    }
+});
+
+// ===== BLOG READER =====
+function openBlogReader(idx) {
+    const article = blogArticles[idx];
+    document.getElementById('blogReaderTitle').textContent = article.title;
+    document.getElementById('blogReaderBody').innerHTML = `
+        <div class="blog-meta">
+            <strong>${article.title}</strong><br>
+            ${article.category} · ${article.date}
+        </div>
+        <div class="blog-content">
+            ${article.content}
+        </div>
+    `;
+    document.getElementById('blogReader').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBlogReader() {
+    document.getElementById('blogReader').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function goHome() {
+    closeLightbox();
+    closeBlogReader();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== INIT =====
+renderGalleryGrid();
+renderBlogList();
+</script>
 </body>
 </html>
